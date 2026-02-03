@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="AESCore/AESCore.vcxitems" Id="18f54c86-e77c-4d22-893c-55d12cdf3a85" />
+  <Project Path="AESTest/AESTest.vcxproj" Id="006b5a58-da4d-4541-9bac-6acba2783202" />
+  <Project Path="AESUnitTest/AESUnitTest.vcxproj" />
+</Solution>
