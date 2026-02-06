@@ -18,12 +18,12 @@
     <ClCompile Include="AESUnitTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="AESTester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="AESTester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
