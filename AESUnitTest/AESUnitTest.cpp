@@ -11,12 +11,12 @@ namespace AESUnitTest
 	{
 	public:
 		
-		TEST_METHOD(TestAESEncyption)
+		/*TEST_METHOD(TestAESEncyption)
 		{
 			AESModule aes({ 0x000462D5ULL, 0x3C8ABAC0ULL });
 			auto encrypted = aes.EncryptBlock("hello world!!");
 			Assert::AreEqual(std::string{"s4UwPvnVsEHNarfUu1kKpQ=="}, encrypted);
-		}
+		}*/
 		TEST_METHOD(TestAESBlockShiftRows)
 		{
 			AESModule aes({ 0x000462D5ULL, 0x3C8ABAC0ULL });

@@ -25,7 +25,7 @@ std::string AESModule::EncryptBlock(std::string_view plainText)
 	auto returnText = std::vector<uint8_t>{plainText.cbegin(), plainText.cend()};
 	while (returnText.size() % 16 != 0)
 	{
-		returnText.push_back(' ');
+		returnText.push_back(0x00);
 	}
 	for (auto block : returnText | std::views::chunk(16))
 	{
@@ -133,21 +133,8 @@ void AESModule::ShiftRows(std::span<uint8_t, 16>& block)
 
 void AESModule::MixColumns(std::span<uint8_t, 16>& inputBlock)
 {
-	//std::array<uint8_t, 16> const fixedBlock { 0x02, 0x03, 0x01, 0x01, 0x01, 0x02, 0x03, 0x01, 0x01, 0x01, 0x02, 0x03, 0x03, 0x01, 0x01, 0x02 };
-	//auto fixedMatrix = std::mdspan{ fixedBlock.data(), 4 ,4 };
+
 	auto inputMatrix = std::mdspan<uint8_t, std::extents<size_t, 4, 4>>{ inputBlock.data() };
-	/*for (std::size_t i = 0; i != inputMatrix.extent(0); ++i)
-	{
-		for (std::size_t j = 0; j != inputMatrix.extent(1); ++j)
-		{
-			uint8_t result = 0;
-			for (std::size_t k = 0; k != inputMatrix.extent(1); ++k)
-			{
-				result ^= mul(inputMatrix[k, j], fixedMatrix[i,k]);
-			}
-			inputMatrix[i, j] = result;
-		}
-	}*/
 	for (std::size_t j = 0; j != inputMatrix.extent(1); ++j)
 	{
 		std::array<uint8_t, 4> temp;
