@@ -6,4 +6,6 @@
   <Project Path="AESCore/AESCore.vcxitems" Id="18f54c86-e77c-4d22-893c-55d12cdf3a85" />
   <Project Path="AESTest/AESTest.vcxproj" Id="006b5a58-da4d-4541-9bac-6acba2783202" />
   <Project Path="AESUnitTest/AESUnitTest.vcxproj" />
+  <Project Path="blockEncryptAlgor/blockEncryptAlgor.vcxitems" Id="9f7244e7-1b99-489f-871b-fc545c98fd07" />
+  <Project Path="BlockTest/BlockTest.vcxproj" />
 </Solution>
