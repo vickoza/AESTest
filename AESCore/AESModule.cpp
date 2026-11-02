@@ -25,12 +25,14 @@ std::string AESModule::EncryptBlock(std::string_view plainText)
 	auto returnText = std::vector<uint8_t>{plainText.cbegin(), plainText.cend()};
 	while (returnText.size() % 16 != 0)
 	{
-		returnText.push_back(0x00);
+		returnText.emplace_back(0x00);
 	}
 	for (auto block : returnText | std::views::chunk(16))
 	{
 		static_assert(std::ranges::contiguous_range<decltype(block)>);
-		processQueue.emplace_back(block, AESStep::SubBytes, AESType::Encrypt, 0);
+		std::array<uint8_t, 16> temp;
+		std::ranges::copy(block, temp.begin());
+		processQueue.emplace_back(temp, AESStep::AddRoundKey, AESType::Encrypt, 0);
 	}
 	ProcessQueue();
 	return std::string{ returnText.cbegin(), returnText.cend()};
@@ -78,13 +80,13 @@ void AESModule::ProcessQueue()
 	}
 }
 
-void AESModule::AddRoundKey(std::span<uint8_t, 16>& block)
+void AESModule::AddRoundKey(std::array<uint8_t, 16>& block)
 {
 	std::span<uint8_t, 16> keySpan{ reinterpret_cast<uint8_t*>(key), 16 };
 	std::ranges::transform(block, keySpan, block.begin(), [](uint8_t a, uint8_t b) { return a ^ b; });
 }
 
-void AESModule::SubBytes(std::span<uint8_t, 16>& inputBlock)
+void AESModule::SubBytes(std::array<uint8_t, 16>& inputBlock)
 {
 	const uint8_t S_BOX[] = {
 	   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -114,7 +116,7 @@ void AESModule::SubBytes(std::span<uint8_t, 16>& inputBlock)
 	}
 }
 
-void AESModule::ShiftRows(std::span<uint8_t, 16>& block)
+void AESModule::ShiftRows(std::array<uint8_t, 16>& block)
 {
 	auto matrix = std::mdspan<uint8_t, std::extents<size_t, 4, 4>>{ block.data()};
 	for (std::size_t i = 1; i != matrix.extent(0); ++i)
@@ -131,7 +133,7 @@ void AESModule::ShiftRows(std::span<uint8_t, 16>& block)
 	}
 }
 
-void AESModule::MixColumns(std::span<uint8_t, 16>& inputBlock)
+void AESModule::MixColumns(std::array<uint8_t, 16>& inputBlock)
 {
 
 	auto inputMatrix = std::mdspan<uint8_t, std::extents<size_t, 4, 4>>{ inputBlock.data() };

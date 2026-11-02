@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <string_view>
 #include <string>
-#include <span>
+#include <array>
 #include <deque>
 #include <tuple>
 
@@ -24,8 +24,7 @@ enum class AESType
 class AESModule
 {
 	uint128_t key;
-	// Use a concrete 16-byte block type instead of std::ranges::view::chunk_view<...>
-	std::deque<std::tuple<std::span<uint8_t, 16>, AESStep, AESType, uint8_t>> processQueue;
+	std::deque<std::tuple<std::array<uint8_t, 16>, AESStep, AESType, uint8_t>> processQueue;
 	friend class AESTester;
 public:
 	AESModule(uint128_t const&);
@@ -35,10 +34,10 @@ public:
 	std::string DecryptBlock(std::string_view);
 private:
 	void ProcessQueue();
-	void AddRoundKey(std::span<uint8_t, 16>&);
-	void SubBytes(std::span<uint8_t, 16>&);
-	void ShiftRows(std::span<uint8_t, 16>&);
-	void MixColumns(std::span<uint8_t, 16>&);
+	void AddRoundKey(std::array<uint8_t, 16>&);
+	void SubBytes(std::array<uint8_t, 16>&);
+	void ShiftRows(std::array<uint8_t, 16>&);
+	void MixColumns(std::array<uint8_t, 16>&);
 	uint8_t xtime(uint8_t x);
 	uint8_t mul(uint8_t x, uint8_t factor);
 };

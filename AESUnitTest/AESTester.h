@@ -1,5 +1,6 @@
 #pragma once
 #include "AESModule.h"
+#include <span>
 class AESTester
 {
 	AESModule& aesModule;
